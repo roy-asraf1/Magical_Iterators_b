@@ -22,7 +22,7 @@ namespace ariel
         void removeElement(int); // remove element from the vector
         std::vector<int> getElement(); // get the pointer of the vector
         int size(); //get the size of the vector
-        
+        int instanceOf;
 
         class AscendingIterator
         {
