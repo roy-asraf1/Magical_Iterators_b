@@ -17,13 +17,12 @@ namespace ariel
         
 
     public:
-        bool isPrime(int);
-        void addElement(int);
-        void removeElement(int);
-        std::vector<int> getElement();
-        std::vector<int> getnumbersPrime();
-        int size();
-        void printContainer();
+        bool isPrime(int); // check for the primes
+        void addElement(int); //add element to the vector
+        void removeElement(int); // remove element from the vector
+        std::vector<int> getElement(); // get the pointer of the vector
+        int size(); //get the size of the vector
+        
 
         class AscendingIterator
         {
@@ -33,9 +32,13 @@ namespace ariel
 
         public:
             AscendingIterator(MagicalContainer *, int);
-            AscendingIterator(MagicalContainer &);
-            AscendingIterator();
+            AscendingIterator(MagicalContainer &); // the adress of the container 
+            AscendingIterator(); //deafoult
+            AscendingIterator(AscendingIterator&&) noexcept;
+            AscendingIterator(const AscendingIterator& ); 
             ~AscendingIterator(){};
+            
+            AscendingIterator& operator=(AscendingIterator&&) noexcept;
             AscendingIterator begin();
             AscendingIterator end();
 
@@ -45,10 +48,9 @@ namespace ariel
             bool operator!=(const AscendingIterator &) const;
             bool operator>(const AscendingIterator &) const;
             bool operator<(const AscendingIterator &) const;
-            AscendingIterator &operator<<(int);
-            AscendingIterator &operator>>(int);
 
-            int operator*() const;
+
+            int operator*() const; //get the val of the container
             void sortAscendingIterator(MagicalContainer *);
         };
 
@@ -64,6 +66,8 @@ namespace ariel
             SideCrossIterator();
             SideCrossIterator(MagicalContainer *, int, int);
             SideCrossIterator(MagicalContainer &);
+            SideCrossIterator(const SideCrossIterator& ); 
+            SideCrossIterator(SideCrossIterator&&) noexcept;
             ~SideCrossIterator(){};
 
             SideCrossIterator begin();
@@ -75,43 +79,47 @@ namespace ariel
             bool operator!=(const SideCrossIterator &) const;
             bool operator>(const SideCrossIterator &) const;
             bool operator<(const SideCrossIterator &) const;
-            SideCrossIterator &operator<<(int);
-            SideCrossIterator &operator>>(int);
             void sortSideCrossIterator(MagicalContainer *);
             MagicalContainer getContainer();
             int operator*() const;
+
+            
+            SideCrossIterator& operator=(SideCrossIterator&&) noexcept;
         };
 
         class PrimeIterator
         {
         private:
-            MagicalContainer *container;
             int index;
-            std::vector<int> numbersPrime;
-            
-            
+            int newindex;
+            MagicalContainer *container;
+            std::vector<int> numbersPrime; // new vector for the primes numbers
 
         public:
             PrimeIterator();
-            PrimeIterator(MagicalContainer *, int);
-            PrimeIterator(MagicalContainer &);
+            PrimeIterator(MagicalContainer* , int ,int,std::vector<int>);
+            PrimeIterator(MagicalContainer& );
+            PrimeIterator(const PrimeIterator& ); 
+            PrimeIterator(PrimeIterator&& ) noexcept; 
             ~PrimeIterator(){};
 
             PrimeIterator begin();
             PrimeIterator end();
 
             PrimeIterator &operator++();
-            PrimeIterator &operator=(const PrimeIterator &other);
+            PrimeIterator &operator=(const PrimeIterator &);
             bool operator==(const PrimeIterator &) const;
             bool operator!=(const PrimeIterator &) const;
             bool operator>(const PrimeIterator &) const;
             bool operator<(const PrimeIterator &) const;
-            PrimeIterator &operator<<(int);
-            PrimeIterator &operator>>(int);
             int operator*() const;
             void sortPrimeIterator(MagicalContainer *);
-            int getcountPrimes(MagicalContainer* container);
-            std::vector<int> getnumbersPrime();
+            int sizeprimes();
+            void myprint();
+            
+            PrimeIterator& operator=(PrimeIterator&&) noexcept;
+            
+            
 
         };
     };
