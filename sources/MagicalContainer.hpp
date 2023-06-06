@@ -16,13 +16,15 @@ namespace ariel
         std::vector<int> numbers;
         
 
+
+
     public:
         bool isPrime(int); // check for the primes
         void addElement(int); //add element to the vector
         void removeElement(int); // remove element from the vector
         std::vector<int> getElement(); // get the pointer of the vector
         int size(); //get the size of the vector
-        int instanceOf;
+        int instanceOf; // we have 3 coditions -AscendingIterator,SideCrossIterator,PrimeIterator another throw error
 
         class AscendingIterator
         {
