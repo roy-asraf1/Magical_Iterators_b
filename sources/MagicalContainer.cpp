@@ -3,14 +3,7 @@
 using namespace std;
 using namespace ariel;
 
-void MagicalContainer::printContainer()
-{
-    for (const auto &num : numbers)
-    {
-        std::cout << num << " ,";
-    }
-    std::cout << std::endl;
-}
+// for check the pointer of the sortPrimeIterator function
 bool MagicalContainer::isPrime(int n) {
     if (n <= 1)
         return false;
@@ -20,27 +13,145 @@ bool MagicalContainer::isPrime(int n) {
     }
     return true;
 }
-
+// return the main container
 vector<int> MagicalContainer::getElement()
 {
     return numbers;
 }
 
+
+
+// add elment to the container
 void MagicalContainer::addElement(int elem)
 {
-    numbers.emplace_back(elem);
+    if (instanceoff == 1)
+    {
+        
+        if(numbers.empty()){
+            numbers.push_back(elem);
+        }
+        else if(numbers.size()==1)
+        {
+            
+            
+            if(numbers.front() < elem)
+                numbers.emplace_back(elem);
+            else if(numbers.front() > elem){
+                numbers.push_back(elem);
+            }
+
+            
+        }
+        else
+        {
+            
+            int temp;
+            for (unsigned long i = 0; i < numbers.size()-1; i++)
+            {
+                
+                
+                if(elem<numbers.front())
+                {
+                    numbers.insert(numbers.begin(),elem); 
+                    break;  
+                }
+                else if (numbers.at(i) < elem && elem < numbers.at(i+1))
+                {
+                    
+                    temp=i+1;
+                    numbers.insert(numbers.begin()+temp,elem);
+                    break;
+                }
+                else if(elem>numbers.back())
+                {
+                    numbers.emplace_back(elem);
+                    break;
+                }
+
+            } 
+        }
+        
+    }
+    else if (instanceoff == 2)
+    {
+        unsigned long size = (unsigned long)numbers.size();
+        numbers.push_back(elem); 
+
+    }
+    else if(instanceoff == 3)
+    {
+        if(isPrime(elem))
+        {
+            
+            if(numbers.empty()){
+            numbers.push_back(elem);
+            }
+            else if(numbers.size()==1)
+            {
+                
+                
+                if(numbers.front() < elem)
+                    numbers.emplace_back(elem);
+                else if(numbers.front() > elem){
+                    numbers.push_back(elem);
+                }
+
+                
+            }
+            else
+            {
+            
+                int temp;
+                for (unsigned long i = 0; i < numbers.size()-1; i++)
+                {
+                    
+                    
+                    if(elem<numbers.front())
+                    {
+                        numbers.insert(numbers.begin(),elem); 
+                        break;  
+                    }
+                    else if (numbers.at(i) < elem && elem < numbers.at(i+1))
+                    {
+                        
+                        temp=i+1;
+                        numbers.insert(numbers.begin()+temp,elem);
+                        break;
+                    }
+                    else if(elem>numbers.back())
+                    {
+                        numbers.emplace_back(elem);
+                        break;
+                    }
+
+                } 
+            }
+        }
+    }
+    else
+    {
+        numbers.push_back(elem); 
+    }
+        
+    
 }
 
+//remove element from the container
 void MagicalContainer::removeElement(int elem)
 {
     bool found = false;
-    for (auto it = numbers.begin(); it != numbers.end(); ++it)
+    auto it = numbers.begin();
+    while (it != numbers.end())
     {
         if (*it == elem)
         {
-            numbers.erase(it);
+            it = numbers.erase(it);
             found = true;
             break;
+        }
+        else
+        {
+            ++it;
         }
     }
 
@@ -50,9 +161,11 @@ void MagicalContainer::removeElement(int elem)
     }
 
     cout << "removing..." << endl;
-    for (const auto &num : numbers)
+    auto numIt = numbers.begin();
+    while (numIt != numbers.end())
     {
-        cout << num << ", ";
+        cout << *numIt << ", ";
+        ++numIt;
     }
     cout << endl;
     cout << "end removing..." << endl;
@@ -60,112 +173,109 @@ void MagicalContainer::removeElement(int elem)
 
     if (!numbers.empty())
     {
-        int num = numbers.back();
+        auto it = numbers.end();
+        --it;
+        int num = *it;
         cout << "end = " << num << endl;
     }
-}
 
+}
+//return the size of the container
 int MagicalContainer::size()
 {
     return numbers.size();
-}
 
-void MagicalContainer::AscendingIterator::sortAscendingIterator(MagicalContainer *container)
-{
-    std::sort(container->numbers.begin(), container->numbers.end());
-}
-void MagicalContainer::SideCrossIterator::sortSideCrossIterator(MagicalContainer *container)
-{
-    std::sort(container->numbers.begin(), container->numbers.end());
-    unsigned long size = (unsigned long)container->size();
-    unsigned long i = 0;
-    vector<int> elements2;
-    int temp2;
-
-    unsigned long x = 0, y = 1;
-    for (i = 0; i < size; i++)
-    {
-        if (i % 2 == 0)
-        {
-            temp2 = container->numbers.at(x);
-            elements2.emplace_back(temp2);
-
-            x++;
-        }
-        else
-        {
-            temp2 = container->numbers.at(size - y);
-            elements2.emplace_back(temp2);
-            y++;
-        }
-    }
-
-    container->numbers.swap(elements2);
-}
-
-// sorting and after that checking i prime number
-
-void MagicalContainer::PrimeIterator::sortPrimeIterator(MagicalContainer* container) {
-    std::vector<int> elements = container->getElement();
-    numbersPrime.clear();
-
-    // Filter out the prime numbers and add them to numbersPrime
-    for (int num : elements) {
-        if (container->isPrime(num)) {
-            numbersPrime.push_back(num);
-        }
-    }
-
-    // Sort the prime numbers in ascending order
-    std::sort(numbersPrime.begin(), numbersPrime.end());
-
-    // Reset the iterator index to the beginning
-    index = 0;
     
 }
 
 
-int MagicalContainer::PrimeIterator::getcountPrimes(MagicalContainer *container)
+int MagicalContainer::PrimeIterator::sizeprimes()
 {
-    int count = 0;
-    for (int num : container->getElement())
-    {
-        if (container->isPrime(num))
-        {
-            count++;
-        }
-    }
-    cout << "Number of prime numbers in the container: " << count << endl;
-    return count;
+    return numbersPrime.size(); //return only the sizes of the prime numbers
 }
+//----------------------- constructors MagicalContainer  ---------------------------
+MagicalContainer::MagicalContainer()
+    {
+      instanceoff=0;  
+    }
+//----------------------- constructors of MagicalContainer - AscendingIterator ---------------------------------
 
-// constructors of MagicalContainer - AscendingIterator
 MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer *container, int index)
-    : container(container), index(index) {}
+    : container(container), index(index) {
+        instanceoff=1;
+    }
 MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &container)
     : container(&container), index(0)
 {
-    sortAscendingIterator(&container);
+    instanceoff=1;
+    helperAscendingIterator(&container);
 }
 MagicalContainer::AscendingIterator::AscendingIterator()
-    : container(), index(0) {}
-// end constructors of MagicalContainer - AscendingIterator
+    : container(), index(0) {
+    instanceoff=1;
+    }
 
+
+
+
+
+//-----------------------constructors of MagicalContainer - SideCrossIterator ---------------------------------
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &container) : container(&container), index(0)
 {
-    sortSideCrossIterator(&container);
+    helperSideCrossIterator(&container);
+    instanceoff=2;
 }
 MagicalContainer::SideCrossIterator::SideCrossIterator()
-    : container(nullptr), index(0), direct(1) {}
+    : container(nullptr), index(0), direct(1) {
+        instanceoff=2;
+    }
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer *container, int index, int direct)
-    : container(container), index(index), direct(direct) {}
+    : container(container), index(index), direct(direct) {
+        instanceoff=2;
+    }
 
-MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container) : container(&container), index(0)
+//------------------------------constructors of MagicalContainer - PrimeIterator  ---------------------------------
+
+MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container)
+   : container(&container), index(0), newindex(0)
 {
-    sortPrimeIterator(&container);
+    instanceoff = 3;
+    if (container.getElement().empty())
+    { // check if we use before the primesnumbers vector
+        numbersPrime.clear();
+        index = 0;
+        newindex = 0;
+    }
+    else
+    {
+        helperPrimeIterator(&container); // the helper function to dort the prime numbers
+    }
+        
 }
-MagicalContainer::PrimeIterator::PrimeIterator() : container(), index(0) {}
-MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer *container, int index) : container(container), index(0) {}
+
+MagicalContainer::PrimeIterator::PrimeIterator() : container(), index(0) {
+    instanceoff = 3;
+}
+
+MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer* container, int index,int newindex,std::vector<int> elem)
+    : container(container), index(index),newindex(newindex),numbersPrime(elem)  {
+        instanceoff = 3;
+    }
+MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& other) 
+{
+    container = other.container;
+    index = other.index;
+    instanceoff = 3;
+}
+
+MagicalContainer::PrimeIterator::PrimeIterator(PrimeIterator&& other) noexcept 
+{
+    container = other.container;
+    index = other.index;
+    other.container = nullptr;
+    other.index = 0;
+    instanceoff = 3;
+}
 
 //------------------------------operator ++ ---------------------------------
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++()
@@ -189,28 +299,22 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
     return *this; // Return the updated iterator
 }
 
-MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
+
+MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator++() 
 {
-    if (index >= numbersPrime.size()) {
-    index =0;
-    throw std::runtime_error("Iterator is already at the end");
-
-    }
-
-    ++index;
-    while (index < container->size())
+    if(index >= container->size())
     {
-        unsigned long jhg = static_cast<unsigned long>(index);
-        if (container->isPrime(container->numbers[jhg]))
-        {
-            break;
-        }
-        ++index;
+       throw runtime_error("no more index");
     }
+    if(newindex == sizeprimes())
+    {
+        throw runtime_error("no more index");
+    }
+    ++newindex;
+    ++index;
     return *this;
-
-
 }
+
 //------------------------------operator = ---------------------------------
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(const AscendingIterator &other)
 {
@@ -218,7 +322,7 @@ MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operat
     {
         if (container != other.container)
         {
-            throw std::runtime_error("Iterators are pointing to different containers");
+            throw std::runtime_error("Iterators are pointing for different containers");
         }
         index = other.index;
     }
@@ -230,7 +334,7 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
     {
         if (container != other.container)
         {
-            throw std::runtime_error("Iterators are pointing to different containers");
+            throw std::runtime_error("Iterators are pointing for different containers");
         }
         index = other.index;
     }
@@ -242,7 +346,7 @@ MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator=(cons
     {
         if (container != other.container)
         {
-            throw std::runtime_error("Iterators are pointing to different containers");
+            throw std::runtime_error ("Iterators are pointing for different containers");
         }
         index = other.index;
     }
@@ -285,7 +389,7 @@ bool MagicalContainer::SideCrossIterator::operator>(const SideCrossIterator &oth
 }
 bool MagicalContainer::PrimeIterator::operator>(const PrimeIterator &other) const
 {
-    return other.index > index;
+    return index > other.index ;
 }
 //------------------------------operator < ---------------------------------
 bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator &other) const
@@ -300,56 +404,9 @@ bool MagicalContainer::PrimeIterator::operator<(const PrimeIterator &other) cons
 {
     return index < other.index;
 }
-//------------------------------operator << --------------------------------
-MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator<<(int steps)
-{
-    index = index - steps;
-    return *this;
-}
-MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator<<(int steps)
-{
-    index -= steps * direct;
-    return *this;
-}
-MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator<<(int steps)
-{
-    int i = 0;
-    for (; i < steps && index >= 0; --index)
-    {
-        unsigned long val = static_cast<unsigned long>(index);
-        if (container->isPrime(container->numbers[val]))
-        {
-            ++i;
-        }
-    }
-    return *this;
-}
-//------------------------------operator >> ---------------------------------
-MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator>>(int steps)
-{
-    index = index + steps;
-    return *this;
-}
-MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator>>(int steps)
-{
-    index += steps * direct;
-    return *this;
-}
-MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator>>(int steps)
-{
-    int i = 0;
-    unsigned long jhg;
-    for (; i < steps; ++index)
-    {
-        jhg = static_cast<unsigned long>(index);
-        if (container->isPrime(container->numbers[jhg]))
-        {
-            ++i;
-        }
-    }
-    return *this;
-}
+
 //------------------------------operator * ---------------------------------
+//
 int MagicalContainer::AscendingIterator::operator*() const
 {
     unsigned long val = static_cast<unsigned long>(index);
@@ -362,8 +419,9 @@ int MagicalContainer::SideCrossIterator::operator*() const
 }
 int MagicalContainer::PrimeIterator::operator*() const
 {
-    unsigned long val = static_cast<unsigned long>(index);
-    return container->numbers[val];
+    unsigned long val=  static_cast<unsigned long>(newindex);
+   
+            return numbersPrime[val];
     
     
 }
@@ -377,16 +435,14 @@ MagicalContainer::SideCrossIterator MagicalContainer::SideCrossIterator::end()
     return SideCrossIterator(container, container->size(), 1);
 }
 
-MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin()
-{
-    
-    return PrimeIterator(container, 0);
+MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin() {
+    return PrimeIterator(container, 0,0,numbersPrime);
 }
 
-MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end()
-{
-    return PrimeIterator(container, numbersPrime.size());
+MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end() {
+    return PrimeIterator(container,numbersPrime.size(),numbersPrime.size(),numbersPrime);
 }
+
 
 MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin()
 {
@@ -397,6 +453,64 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 
     return AscendingIterator(container, container->size());
 }
-// std::vector<int> MagicalContainer::PrimeIterator::getnumbersPrime() {
-//     return numbersPrime;
-// }
+void MagicalContainer::PrimeIterator:: myprint()
+{
+
+    for (auto a :numbersPrime){
+        cout<<a<<",   ";
+    }
+}
+//------------------------------ helpers  ---------------------------------
+//helper function for everything
+
+void MagicalContainer::AscendingIterator::helperAscendingIterator(MagicalContainer *container)
+{
+    std::sort(container->numbers.begin(), container->numbers.end());
+}
+void MagicalContainer::SideCrossIterator::helperSideCrossIterator(MagicalContainer *container)
+{
+    std::sort(container->numbers.begin(), container->numbers.end());
+    unsigned long size = (unsigned long)container->size();
+    unsigned long idx = 0;
+    vector<int> SideCrossNumbers; // the real values we need will push this vector
+    int temp;
+
+    unsigned long start = 0, end = 1;
+    while (idx < size)
+    {
+        if (idx % 2 == 0) // all the non odd numbers will be in the start
+        {
+            temp = container->numbers.at(start);
+            SideCrossNumbers.emplace_back(temp);
+
+            start++;
+        }
+        else
+        {
+            temp = container->numbers.at(size - end); // all the  odd numbers will be in the end
+            SideCrossNumbers.emplace_back(temp);
+            end++;
+        }
+
+        idx++;
+    }
+
+    container->numbers.swap(SideCrossNumbers); //swap with pointers according the task with o(1)
+}
+// sorting and after that checking i prime number
+void MagicalContainer::PrimeIterator::helperPrimeIterator(MagicalContainer* container) {
+
+    for(int i: container->getElement()){ // for each check if prime
+        if(container->isPrime(i)){
+            numbersPrime.emplace_back(i); // insert to the another vector of the only primes numbers
+        }
+    }
+}
+void MagicalContainer::printContainer()
+{
+    for (const auto &num : numbers)
+    {
+        std::cout << num << " ,";
+    }
+    std::cout << std::endl;
+}
