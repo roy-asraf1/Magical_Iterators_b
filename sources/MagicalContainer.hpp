@@ -1,4 +1,4 @@
-#pragma one
+#pragma once
 
 #include <vector>
 #include <iostream>
@@ -7,6 +7,7 @@
 #include <stdexcept>
 
 using namespace std;
+static int instanceoff =0;
 namespace ariel
 {
 
@@ -14,17 +15,17 @@ namespace ariel
     {
     private:
         std::vector<int> numbers;
+    
         
-
-
-
     public:
         bool isPrime(int); // check for the primes
         void addElement(int); //add element to the vector
         void removeElement(int); // remove element from the vector
         std::vector<int> getElement(); // get the pointer of the vector
         int size(); //get the size of the vector
-        int instanceOf; // we have 3 coditions -AscendingIterator,SideCrossIterator,PrimeIterator another throw error
+        void printContainer();
+        MagicalContainer();
+        
 
         class AscendingIterator
         {
@@ -53,7 +54,7 @@ namespace ariel
 
 
             int operator*() const; //get the val of the container
-            void sortAscendingIterator(MagicalContainer *);
+            void helperAscendingIterator(MagicalContainer *);
         };
 
         class SideCrossIterator
@@ -62,7 +63,7 @@ namespace ariel
             MagicalContainer *container;
             int index;
             int direct;
-            std::vector<int> sidecros;
+            
 
         public:
             SideCrossIterator();
@@ -81,7 +82,7 @@ namespace ariel
             bool operator!=(const SideCrossIterator &) const;
             bool operator>(const SideCrossIterator &) const;
             bool operator<(const SideCrossIterator &) const;
-            void sortSideCrossIterator(MagicalContainer *);
+            void helperSideCrossIterator(MagicalContainer *);
             MagicalContainer getContainer();
             int operator*() const;
 
@@ -115,7 +116,7 @@ namespace ariel
             bool operator>(const PrimeIterator &) const;
             bool operator<(const PrimeIterator &) const;
             int operator*() const;
-            void sortPrimeIterator(MagicalContainer *);
+            void helperPrimeIterator(MagicalContainer *);
             int sizeprimes();
             void myprint();
             
